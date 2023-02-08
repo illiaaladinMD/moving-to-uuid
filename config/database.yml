@@ -17,7 +17,7 @@
 development:
   adapter: postgresql
   encoding: unicode
-  database: myapp_development
+  database: moving-to-uuid-development
   pool: 5
   username: postgres
   password: postgres
@@ -47,7 +47,7 @@ development:
 test:
   adapter: postgresql
   encoding: unicode
-  database: myapp_test
+  database: moving-to-uuid-test
   pool: 5
   username: postgres
   password: postgres
