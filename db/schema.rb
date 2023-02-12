@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_08_204000) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_12_092017) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
@@ -20,6 +20,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_204000) do
     t.integer "following_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.index ["uuid"], name: "index_followings_on_uuid", unique: true
   end
 
   create_table "posts", force: :cascade do |t|
@@ -28,7 +30,9 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_204000) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "user_id"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.index ["user_id"], name: "index_posts_on_user_id"
+    t.index ["uuid"], name: "index_posts_on_uuid", unique: true
   end
 
   create_table "reactions", force: :cascade do |t|
@@ -36,8 +40,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_204000) do
     t.datetime "updated_at", null: false
     t.bigint "post_id"
     t.bigint "user_id"
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
     t.index ["post_id"], name: "index_reactions_on_post_id"
     t.index ["user_id"], name: "index_reactions_on_user_id"
+    t.index ["uuid"], name: "index_reactions_on_uuid", unique: true
   end
 
   create_table "users", force: :cascade do |t|
@@ -45,6 +51,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_08_204000) do
     t.text "last_name", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.index ["uuid"], name: "index_users_on_uuid", unique: true
   end
 
   add_foreign_key "followings", "users", column: "follower_id"
