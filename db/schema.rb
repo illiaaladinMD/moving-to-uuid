@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_12_092017) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_12_100858) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pgcrypto"
   enable_extension "plpgsql"
 
-  create_table "followings", force: :cascade do |t|
+  create_table "followings", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "numeric_id", default: -> { "nextval('followings_id_seq'::regclass)" }, null: false
     t.integer "follower_id", null: false
     t.integer "following_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
-    t.index ["uuid"], name: "index_followings_on_uuid", unique: true
+    t.index ["id"], name: "index_followings_on_id", unique: true
   end
 
   create_table "posts", force: :cascade do |t|
@@ -35,15 +35,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_12_092017) do
     t.index ["uuid"], name: "index_posts_on_uuid", unique: true
   end
 
-  create_table "reactions", force: :cascade do |t|
+  create_table "reactions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
+    t.bigint "numeric_id", default: -> { "nextval('reactions_id_seq'::regclass)" }, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.bigint "post_id"
     t.bigint "user_id"
-    t.uuid "uuid", default: -> { "gen_random_uuid()" }, null: false
+    t.index ["id"], name: "index_reactions_on_id", unique: true
     t.index ["post_id"], name: "index_reactions_on_post_id"
     t.index ["user_id"], name: "index_reactions_on_user_id"
-    t.index ["uuid"], name: "index_reactions_on_uuid", unique: true
   end
 
   create_table "users", force: :cascade do |t|
