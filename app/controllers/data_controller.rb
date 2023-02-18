@@ -17,5 +17,11 @@ class DataController < ApplicationController
       post.reactions.create(user_id: user.id + 25)
       user.followers.create(follower_id: user.id + 25)
     end
+    respond_to do |format|
+      flash[:notice] = "Test data generated successfully"
+      format.turbo_stream do
+        render turbo_stream: turbo_stream.update("flash", partial: "data/flash")
+      end
+    end
   end
 end
